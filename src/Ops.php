@@ -16,9 +16,14 @@ abstract class Op
     /**
      * Maximum length of an Op result.
      */
+    public const MAX_RESULT_LENGTH = 4096;
+
+    /**
+     * Maximum length of the message an Op can be applied to.
+     */
     public function maxResultLength(): int
     {
-        return 4096;
+        return self::MAX_RESULT_LENGTH;
     }
 
     /**
@@ -140,7 +145,7 @@ abstract class OpBinary extends Op
     public static function deserializeFromTag(StreamDeserializationContext $ctx, int $tag): ?Op
     {
         if (isset(Ops::$_SUBCLS_BY_TAG[$tag])) {
-            $arg = $ctx->readVarbytes((new Op())->maxResultLength(), 1);
+            $arg = $ctx->readVarbytes(Op::MAX_RESULT_LENGTH, 1);
             $class = Ops::$_SUBCLS_BY_TAG[$tag];
             return new $class($arg);
         }
@@ -398,19 +403,32 @@ class Ops
 {
     /** @var array<int, class-string<Op>> */
     public static array $_SUBCLS_BY_TAG = [];
+    private static bool $_initialized = false;
 
     public static function init(): void
     {
-        self::$_SUBCLS_BY_TAG = [
-            (new OpAppend())->tag() => OpAppend::class,
-            (new OpPrepend())->tag() => OpPrepend::class,
-            (new OpReverse())->tag() => OpReverse::class,
-            (new OpSHA1())->tag() => OpSHA1::class,
-            (new OpRIPEMD160())->tag() => OpRIPEMD160::class,
-            (new OpSHA256())->tag() => OpSHA256::class,
-        ];
+        if (!self::$_initialized) {
+            self::$_SUBCLS_BY_TAG = [
+                (new OpAppend())->tag() => OpAppend::class,
+                (new OpPrepend())->tag() => OpPrepend::class,
+                (new OpReverse())->tag() => OpReverse::class,
+                (new OpSHA1())->tag() => OpSHA1::class,
+                (new OpRIPEMD160())->tag() => OpRIPEMD160::class,
+                (new OpSHA256())->tag() => OpSHA256::class,
+            ];
+            self::$_initialized = true;
+        }
+    }
+
+    /**
+     * Ensure the registry is initialized.
+     */
+    public static function ensureInitialized(): void
+    {
+        if (!self::$_initialized) {
+            self::init();
+        }
     }
 }
 
-// Initialize the registry
-Ops::init();
+// Lazy initialization - will be initialized on first use

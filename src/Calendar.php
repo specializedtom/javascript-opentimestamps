@@ -164,8 +164,8 @@ class UrlWhitelist
  */
 class Calendar
 {
-    /** @var UrlWhitelist Default whitelist */
-    public static UrlWhitelist $DEFAULT_CALENDAR_WHITELIST;
+    /** @var UrlWhitelist|null Default whitelist */
+    private static ?UrlWhitelist $_defaultCalendarWhitelist = null;
 
     /** @var string[] Default aggregator URLs */
     public const DEFAULT_AGGREGATORS = [
@@ -175,15 +175,29 @@ class Calendar
         'https://ots.btc.catallaxy.com'
     ];
 
+    /**
+     * Get the default calendar whitelist, initializing lazily if needed.
+     *
+     * @return UrlWhitelist The default whitelist
+     */
+    public static function getDefaultCalendarWhitelist(): UrlWhitelist
+    {
+        if (self::$_defaultCalendarWhitelist === null) {
+            self::$_defaultCalendarWhitelist = new UrlWhitelist([
+                'https://*.calendar.opentimestamps.org',
+                'https://*.calendar.eternitywall.com',
+                'https://*.calendar.catallaxy.com'
+            ]);
+        }
+        return self::$_defaultCalendarWhitelist;
+    }
+
+    /**
+     * Initialize the default whitelist (for backward compatibility).
+     */
     public static function init(): void
     {
-        self::$DEFAULT_CALENDAR_WHITELIST = new UrlWhitelist([
-            'https://*.calendar.opentimestamps.org',
-            'https://*.calendar.eternitywall.com',
-            'https://*.calendar.catallaxy.com'
-        ]);
+        // Lazy initialization is now used by default
+        self::getDefaultCalendarWhitelist();
     }
 }
-
-// Initialize calendar defaults
-Calendar::init();
