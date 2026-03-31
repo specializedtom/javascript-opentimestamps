@@ -2,36 +2,21 @@
 # Dependencies
 vendor/
 
-# Build artifacts
-dist/
-build/
-*.phar
-
-# Logs
+# Logs and temp files
 *.log
+*.tmp
 
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
 # Editor/IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-*.tmp
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# PHP specific
-*.php~
-*.bak
+# Build artifacts
+dist/
+build/
+*.phar
 ```

@@ -13,6 +13,8 @@ namespace OpenTimestamps;
  */
 abstract class TimeAttestation
 {
+    public const MAX_PAYLOAD_SIZE = 8192;
+
     public function tagSize(): int
     {
         return 8;
@@ -20,7 +22,37 @@ abstract class TimeAttestation
 
     public function maxPayloadSize(): int
     {
-        return 8192;
+        return self::MAX_PAYLOAD_SIZE;
+    }
+
+    /**
+     * Get the tag bytes for PendingAttestation.
+     *
+     * @return int[] Tag bytes
+     */
+    public static function pendingAttestationTag(): array
+    {
+        return [0x83, 0xdf, 0xe3, 0x0d, 0x2e, 0xf9, 0x0c, 0x8e];
+    }
+
+    /**
+     * Get the tag bytes for BitcoinBlockHeaderAttestation.
+     *
+     * @return int[] Tag bytes
+     */
+    public static function bitcoinBlockHeaderAttestationTag(): array
+    {
+        return [0x05, 0x88, 0x96, 0x0d, 0x73, 0xd7, 0x19, 0x01];
+    }
+
+    /**
+     * Get the tag bytes for LitecoinBlockHeaderAttestation.
+     *
+     * @return int[] Tag bytes
+     */
+    public static function litecoinBlockHeaderAttestationTag(): array
+    {
+        return [0x06, 0x86, 0x9a, 0x0d, 0x73, 0xd7, 0x1b, 0x45];
     }
 
     /**
@@ -33,15 +65,15 @@ abstract class TimeAttestation
     {
         $tag = $ctx->readBytes(8);
 
-        $serializedAttestation = $ctx->readVarbytes((new TimeAttestation())->maxPayloadSize());
+        $serializedAttestation = $ctx->readVarbytes(TimeAttestation::MAX_PAYLOAD_SIZE);
 
         $ctxPayload = new StreamDeserializationContext($serializedAttestation);
 
-        if (Utils::arrEq($tag, (new PendingAttestation())->tag())) {
+        if (Utils::arrEq($tag, TimeAttestation::pendingAttestationTag())) {
             return PendingAttestation::deserialize($ctxPayload);
-        } elseif (Utils::arrEq($tag, (new BitcoinBlockHeaderAttestation())->tag())) {
+        } elseif (Utils::arrEq($tag, TimeAttestation::bitcoinBlockHeaderAttestationTag())) {
             return BitcoinBlockHeaderAttestation::deserialize($ctxPayload);
-        } elseif (Utils::arrEq($tag, (new LitecoinBlockHeaderAttestation())->tag())) {
+        } elseif (Utils::arrEq($tag, TimeAttestation::litecoinBlockHeaderAttestationTag())) {
             return LitecoinBlockHeaderAttestation::deserialize($ctxPayload);
         }
 
@@ -129,7 +161,7 @@ class UnknownAttestation extends TimeAttestation
 
     public static function deserialize(StreamDeserializationContext $ctxPayload, array $tag): UnknownAttestation
     {
-        $payload = $ctxPayload->readBytes((new TimeAttestation())->maxPayloadSize());
+        $payload = $ctxPayload->readBytes(TimeAttestation::MAX_PAYLOAD_SIZE);
         return new UnknownAttestation($tag, $payload);
     }
 
@@ -153,6 +185,9 @@ class PendingAttestation extends TimeAttestation
 {
     public string $uri = '';
 
+    public const MAX_URI_LENGTH = 1000;
+    public const ALLOWED_URI_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._/:';
+
     public function __construct(string $uri = '')
     {
         $this->uri = $uri;
@@ -165,22 +200,22 @@ class PendingAttestation extends TimeAttestation
 
     public function maxUriLength(): int
     {
-        return 1000;
+        return self::MAX_URI_LENGTH;
     }
 
     public function allowedUriChars(): string
     {
-        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._/:';
+        return self::ALLOWED_URI_CHARS;
     }
 
     public static function checkUri(string $uri): bool
     {
-        if (strlen($uri) > (new PendingAttestation())->maxUriLength()) {
+        if (strlen($uri) > PendingAttestation::MAX_URI_LENGTH) {
             return false;
         }
         for ($i = 0; $i < strlen($uri); $i++) {
             $char = $uri[$i];
-            if (strpos((new PendingAttestation())->allowedUriChars(), $char) === false) {
+            if (strpos(PendingAttestation::ALLOWED_URI_CHARS, $char) === false) {
                 return false;
             }
         }
@@ -189,7 +224,7 @@ class PendingAttestation extends TimeAttestation
 
     public static function deserialize(StreamDeserializationContext $ctxPayload): PendingAttestation
     {
-        $utf8Uri = $ctxPayload->readVarbytes((new PendingAttestation())->maxUriLength());
+        $utf8Uri = $ctxPayload->readVarbytes(PendingAttestation::MAX_URI_LENGTH);
         $decode = Utils::bytesToChars($utf8Uri);
         return new PendingAttestation($decode);
     }

@@ -238,19 +238,3 @@ class BitcoinNode
         return $result;
     }
 }
-
-/**
- * Bitcoin utility class.
- */
-class Bitcoin
-{
-    /**
-     * Read Bitcoin configuration.
-     *
-     * @return array Configuration array
-     */
-    public static function readBitcoinConf(): array
-    {
-        return BitcoinNode::readBitcoinConf();
-    }
-}

@@ -1,9 +1,8 @@
 {
-  "name": "opentimestamps",
+  "name": "opentimestamps/php-opentimestamps",
   "version": "0.4.9",
-  "description": "JS Porting of OpenTimestamps - PHP 8.4 PSR-4 compliant version",
-  "type": "module",
-  "main": "src/OpenTimestamps.php",
+  "description": "PHP Porting of OpenTimestamps - PHP 8.4 PSR-4 compliant version",
+  "type": "library",
   "autoload": {
     "psr-4": {
       "OpenTimestamps\\": "src/"
@@ -18,12 +17,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/opentimestamps/javascript-opentimestamps.git"
+    "url": "git+https://github.com/opentimestamps/php-opentimestamps.git"
   },
-  "author": "EternityWall",
+  "authors": [
+    {
+      "name": "EternityWall"
+    }
+  ],
   "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/opentimestamps/javascript-opentimestamps/issues"
+    "url": "https://github.com/opentimestamps/php-opentimestamps/issues"
   },
-  "homepage": "https://github.com/opentimestamps/javascript-opentimestamps#readme"
+  "homepage": "https://github.com/opentimestamps/php-opentimestamps#readme"
 }
