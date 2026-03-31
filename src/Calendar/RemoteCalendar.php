@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace OpenTimestamps;
 
 /**
- * Calendar module - Remote calendar interface.
- */
-
-/**
  * Remote calendar client.
  */
 class RemoteCalendar
@@ -97,107 +93,5 @@ class RemoteCalendar
 
         $ctx = new StreamDeserializationContext(Utils::toBytes($response));
         return Timestamp::deserialize($ctx, $commitment);
-    }
-}
-
-/**
- * URL whitelist for calendar filtering.
- */
-class UrlWhitelist
-{
-    /** @var string[] */
-    private array $urls = [];
-
-    /**
-     * @param string[]|null $urls URLs to add
-     */
-    public function __construct(?array $urls = null)
-    {
-        if ($urls !== null) {
-            foreach ($urls as $url) {
-                $this->add($url);
-            }
-        }
-    }
-
-    /**
-     * Add URL to whitelist.
-     *
-     * @param string $url URL to add
-     */
-    public function add(string $url): void
-    {
-        if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
-            $this->urls[] = 'http://' . $url;
-            $this->urls[] = 'https://' . $url;
-        } else {
-            $this->urls[] = $url;
-        }
-    }
-
-    /**
-     * Check if URL is in whitelist.
-     *
-     * @param string $url URL to check
-     * @return bool True if whitelisted
-     */
-    public function contains(string $url): bool
-    {
-        foreach ($this->urls as $whitelisted) {
-            // Simple pattern matching for wildcards
-            $pattern = str_replace('*', '.*', preg_quote($whitelisted, '/'));
-            if (preg_match('/^' . $pattern . '$/', $url)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function __toString(): string
-    {
-        return 'UrlWhitelist([' . implode(',', $this->urls) . '])';
-    }
-}
-
-/**
- * Default calendar configuration.
- */
-class Calendar
-{
-    /** @var UrlWhitelist|null Default whitelist */
-    private static ?UrlWhitelist $_defaultCalendarWhitelist = null;
-
-    /** @var string[] Default aggregator URLs */
-    public const DEFAULT_AGGREGATORS = [
-        'https://a.pool.opentimestamps.org',
-        'https://b.pool.opentimestamps.org',
-        'https://a.pool.eternitywall.com',
-        'https://ots.btc.catallaxy.com'
-    ];
-
-    /**
-     * Get the default calendar whitelist, initializing lazily if needed.
-     *
-     * @return UrlWhitelist The default whitelist
-     */
-    public static function getDefaultCalendarWhitelist(): UrlWhitelist
-    {
-        if (self::$_defaultCalendarWhitelist === null) {
-            self::$_defaultCalendarWhitelist = new UrlWhitelist([
-                'https://*.calendar.opentimestamps.org',
-                'https://*.calendar.eternitywall.com',
-                'https://*.calendar.catallaxy.com'
-            ]);
-        }
-        return self::$_defaultCalendarWhitelist;
-    }
-
-    /**
-     * Initialize the default whitelist (for backward compatibility).
-     */
-    public static function init(): void
-    {
-        // Lazy initialization is now used by default
-        self::getDefaultCalendarWhitelist();
     }
 }
