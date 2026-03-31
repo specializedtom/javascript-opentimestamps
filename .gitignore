@@ -1,8 +1,37 @@
-.idea/
-node_modules
-out/
-sync.sh
-*.wif
-deploy.sh
+```
+# Dependencies
+vendor/
+
+# Build artifacts
 dist/
-*~
+build/
+*.phar
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# PHP specific
+*.php~
+*.bak
+```
