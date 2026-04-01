@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Attestations;
 
 /**
  * Pending attestation - commitment recorded in remote calendar.

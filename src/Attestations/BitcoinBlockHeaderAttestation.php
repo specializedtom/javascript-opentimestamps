@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Attestations;
 
 /**
  * Bitcoin Block Header Attestation.
