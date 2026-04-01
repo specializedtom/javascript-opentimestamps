@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Exceptions;
 
 /**
  * Exceeded size error for response limits.

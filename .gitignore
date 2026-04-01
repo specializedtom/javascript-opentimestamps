@@ -1,73 +1,44 @@
 ```
-# Dependencies
-vendor/
-
-# Compiled files
-*.phpc
+# Compiled and binary files
+*.pyc
+__pycache__/
 *.o
 *.obj
-*.so
-*.dll
 *.exe
+*.dll
+*.so
+*.a
+*.out
+
+# Dependencies
+vendor/
+composer.lock
 
 # Build artifacts
-build/
 dist/
+build/
 *.phar
 
-# Logs
+# Logs and temp files
 *.log
-
-# Temporary files
 *.tmp
-*.temp
-*~
-
-# Cache
-.cache/
-.php_cs.cache
+*.swp
 
 # Environment
 .env
 .env.local
 .env.*
 
-# IDE
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
+# Coverage and testing
+.coverage
 coverage/
 htmlcov/
-.coverage
 
-# Compression
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+# OS specific
+.DS_Store
+Thumbs.db
 ```

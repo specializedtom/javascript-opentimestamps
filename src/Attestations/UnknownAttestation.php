@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Attestations;
 
 /**
  * Placeholder for attestations that don't support specific types.

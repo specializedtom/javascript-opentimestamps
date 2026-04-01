@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Exceptions;
 
 /**
  * Wrong type for specified serializer.
