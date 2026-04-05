@@ -15,6 +15,9 @@
     "test": "phpunit tests/",
     "lint": "phpstan analyze src/"
   },
+  "bin": [
+    "bin/ots"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/opentimestamps/php-opentimestamps.git"
