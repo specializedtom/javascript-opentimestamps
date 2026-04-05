@@ -42,10 +42,10 @@ class RemoteCalendar
             ],
         ]);
 
-        $response = file_get_contents($url, false, $context);
+        $response = @file_get_contents($url, false, $context);
 
         if ($response === false) {
-            throw new URLError('Failed to submit to calendar');
+            throw new URLError('Failed to submit to calendar: ' . $url);
         }
 
         if (strlen($response) > 10000) {
@@ -77,7 +77,7 @@ class RemoteCalendar
         $response = @file_get_contents($url, false, $context);
 
         if ($response === false) {
-            throw new URLError('Failed to get timestamp from calendar');
+            throw new URLError('Failed to get timestamp from calendar: ' . $url);
         }
 
         if (strlen($response) > 10000) {
