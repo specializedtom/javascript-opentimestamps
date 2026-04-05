@@ -299,7 +299,7 @@ class Timestamp
         $r = '';
 
         foreach ($this->attestations as $attestation) {
-            $r .= $indention . 'verify ' . $attestation->__toString() . $strResult($verbosity, $this->msg) . "\n";
+            $r .= $indention . 'verify ' . $attestation->__toString() . $strResult($verbosity, $this->msg, null) . "\n";
             if ($attestation instanceof BitcoinBlockHeaderAttestation) {
                 $tx = Utils::bytesToHex((new OpReverse())->call($this->msg));
                 $r .= $indention . '# Bitcoin block merkle root ' . $tx . "\n";
