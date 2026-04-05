@@ -7,7 +7,7 @@ namespace OpenTimestamps\Calendar;
 use OpenTimestamps\Exceptions\ExceededSizeError;
 use OpenTimestamps\Exceptions\URLError;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
-use OpenTimestamps\Timestamp;
+use OpenTimestamps\Timestamp\Timestamp;
 use OpenTimestamps\Utils;
 
 /**

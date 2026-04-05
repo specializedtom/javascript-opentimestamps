@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Timestamp;
 
 use OpenTimestamps\Attestations\BitcoinBlockHeaderAttestation;
 use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
@@ -15,6 +15,7 @@ use OpenTimestamps\Ops\Op;
 use OpenTimestamps\Ops\OpReverse;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
 use OpenTimestamps\Serialize\StreamSerializationContext;
+use OpenTimestamps\Utils;
 
 /**
  * Timestamp class representing a proof that attestations commit to a message.

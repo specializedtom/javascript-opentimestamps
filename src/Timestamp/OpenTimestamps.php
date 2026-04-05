@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Timestamp;
 
 use OpenTimestamps\Attestations\BitcoinBlockHeaderAttestation;
 use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
@@ -11,10 +11,14 @@ use OpenTimestamps\Attestations\TimeAttestation;
 use OpenTimestamps\Attestations\UnknownAttestation;
 use OpenTimestamps\Calendar\Calendar;
 use OpenTimestamps\Calendar\RemoteCalendar;
+use OpenTimestamps\BitcoinNode;
+use OpenTimestamps\Esplora;
 use OpenTimestamps\Exceptions\VerificationError;
+use OpenTimestamps\Merkle;
 use OpenTimestamps\Ops\OpAppend;
 use OpenTimestamps\Ops\OpSHA256;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Utils;
 
 /**
  * Main OpenTimestamps class - facade for timestamp operations.

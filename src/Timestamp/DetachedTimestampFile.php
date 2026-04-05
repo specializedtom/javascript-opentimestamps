@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Timestamp;
 
 use OpenTimestamps\Exceptions\BadMagicError;
 use OpenTimestamps\Exceptions\TypeError;
@@ -12,6 +12,7 @@ use OpenTimestamps\Ops\CryptOp;
 use OpenTimestamps\Ops\Op;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
 use OpenTimestamps\Serialize\StreamSerializationContext;
+use OpenTimestamps\Utils;
 
 /**
  * Detached Timestamp File - A file containing a timestamp for another file.

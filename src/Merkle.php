@@ -7,6 +7,7 @@ namespace OpenTimestamps;
 use OpenTimestamps\Ops\OpAppend;
 use OpenTimestamps\Ops\OpPrepend;
 use OpenTimestamps\Ops\OpSHA256;
+use OpenTimestamps\Timestamp\Timestamp;
 
 /**
  * Merkle tree operations for timestamps.
