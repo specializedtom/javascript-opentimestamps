@@ -352,12 +352,18 @@ class OpenTimestamps
             if (isset($options['calendars']) && is_array($options['calendars']) && count($options['calendars']) > 0) {
                 $candidateCalendars = $options['calendars'];
             } else {
-                $candidateCalendars = [$attestation->uri];
+                $candidateCalendars = array_merge([$attestation->uri], Calendar::DEFAULT_AGGREGATORS);
             }
+            $candidateCalendars = array_values(array_unique($candidateCalendars));
 
             foreach ($candidateCalendars as $calendarUrl) {
                 if (!is_string($calendarUrl) || $calendarUrl === '') {
                     continue;
+                }
+                if (isset($options['whitelist']) && $options['whitelist'] instanceof \OpenTimestamps\Calendar\UrlWhitelist) {
+                    if (!$options['whitelist']->contains($calendarUrl)) {
+                        continue;
+                    }
                 }
 
                 try {
