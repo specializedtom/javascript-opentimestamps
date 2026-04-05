@@ -360,11 +360,6 @@ class OpenTimestamps
                 if (!is_string($calendarUrl) || $calendarUrl === '') {
                     continue;
                 }
-                if (isset($options['whitelist']) && $options['whitelist'] instanceof \OpenTimestamps\Calendar\UrlWhitelist) {
-                    if (!$options['whitelist']->contains($calendarUrl)) {
-                        continue;
-                    }
-                }
 
                 try {
                     $remote = new RemoteCalendar($calendarUrl);
