@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
-
-use OpenTimestamps\Calendar\UrlWhitelist;
+namespace OpenTimestamps\Calendar;
 
 /**
  * Default calendar configuration.

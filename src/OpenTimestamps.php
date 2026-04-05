@@ -9,6 +9,7 @@ use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
 use OpenTimestamps\Attestations\PendingAttestation;
 use OpenTimestamps\Attestations\TimeAttestation;
 use OpenTimestamps\Attestations\UnknownAttestation;
+use OpenTimestamps\Calendar\Calendar;
 use OpenTimestamps\Calendar\RemoteCalendar;
 use OpenTimestamps\Exceptions\VerificationError;
 use OpenTimestamps\Ops\OpAppend;
