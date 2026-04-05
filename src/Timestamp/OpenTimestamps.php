@@ -14,7 +14,7 @@ use OpenTimestamps\Calendar\RemoteCalendar;
 use OpenTimestamps\BitcoinNode;
 use OpenTimestamps\Esplora;
 use OpenTimestamps\Exceptions\VerificationError;
-use OpenTimestamps\Merkle;
+use OpenTimestamps\Merkle\Merkle;
 use OpenTimestamps\Ops\OpAppend;
 use OpenTimestamps\Ops\OpSHA256;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
