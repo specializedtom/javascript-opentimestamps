@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace OpenTimestamps;
 
+use OpenTimestamps\Ops\OpAppend;
+use OpenTimestamps\Ops\OpPrepend;
+use OpenTimestamps\Ops\OpSHA256;
+
 /**
  * Merkle tree operations for timestamps.
  */

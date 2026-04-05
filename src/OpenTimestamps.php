@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace OpenTimestamps;
 
+use OpenTimestamps\Attestations\BitcoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\PendingAttestation;
+use OpenTimestamps\Attestations\TimeAttestation;
+use OpenTimestamps\Attestations\UnknownAttestation;
+use OpenTimestamps\Exceptions\VerificationError;
+use OpenTimestamps\Ops\OpAppend;
+use OpenTimestamps\Ops\OpSHA256;
+
 /**
  * Main OpenTimestamps class - facade for timestamp operations.
  */

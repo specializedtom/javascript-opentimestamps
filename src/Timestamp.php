@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace OpenTimestamps;
 
+use OpenTimestamps\Attestations\BitcoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\PendingAttestation;
+use OpenTimestamps\Attestations\TimeAttestation;
+use OpenTimestamps\Attestations\UnknownAttestation;
+use OpenTimestamps\Exceptions\TypeError;
+use OpenTimestamps\Exceptions\ValueError;
+use OpenTimestamps\Ops\Op;
+use OpenTimestamps\Ops\OpReverse;
+
 /**
  * Timestamp class representing a proof that attestations commit to a message.
  */
@@ -40,7 +50,7 @@ class Timestamp
     {
         if (count($msg) === 0 || !is_array($msg)) {
             throw new TypeError('Expected msg to be bytes; got ' . gettype($msg));
-        } elseif (count($msg) > (new Op())->maxMsgLength()) {
+        } elseif (count($msg) > Op::MAX_RESULT_LENGTH) {
             throw new TypeError('Message exceeds Op length limit');
         }
         $this->msg = $msg;

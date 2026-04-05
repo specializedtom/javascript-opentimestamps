@@ -28,7 +28,7 @@ The package uses PSR-4 autoloading:
 require 'vendor/autoload.php';
 
 use OpenTimestamps\DetachedTimestampFile;
-use OpenTimestamps\OpSHA256;
+use OpenTimestamps\Ops\OpSHA256;
 
 $data = array_values(unpack('C*', "hello world"));
 $detached = DetachedTimestampFile::fromBytes(new OpSHA256(), $data);

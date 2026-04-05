@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OpenTimestamps;
 
+use OpenTimestamps\Exceptions\URLError;
+
 /**
  * Esplora blockchain explorer client.
  */

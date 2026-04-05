@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace OpenTimestamps;
 
+use OpenTimestamps\Exceptions\BadMagicError;
+use OpenTimestamps\Exceptions\TypeError;
+use OpenTimestamps\Exceptions\UnsupportedMajorVersion;
+use OpenTimestamps\Exceptions\ValueError;
+use OpenTimestamps\Ops\CryptOp;
+use OpenTimestamps\Ops\Op;
+
 /**
  * Detached Timestamp File - A file containing a timestamp for another file.
  */

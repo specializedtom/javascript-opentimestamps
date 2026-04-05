@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace OpenTimestamps;
 
+use OpenTimestamps\Exceptions\ExceededSizeError;
+use OpenTimestamps\Exceptions\URLError;
+
 /**
  * Remote calendar client.
  */
