@@ -28,6 +28,9 @@ class Cli
     public static function run(array $argv): int
     {
         array_shift($argv);
+        if (isset($argv[0]) && in_array($argv[0], ['bin/ots', '/var/www/html/bin/ots', 'ots'], true)) {
+            array_shift($argv);
+        }
         $command = $argv[0] ?? null;
 
         if ($command === null || in_array($command, ['-h', '--help'], true)) {
