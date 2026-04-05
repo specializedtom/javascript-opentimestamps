@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenTimestamps\Ops;
 
-use OpenTimestamps\StreamDeserializationContext;
-use OpenTimestamps\StreamSerializationContext;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Serialize\StreamSerializationContext;
 use OpenTimestamps\Utils;
 
 /**

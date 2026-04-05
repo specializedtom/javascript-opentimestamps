@@ -9,9 +9,11 @@ use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
 use OpenTimestamps\Attestations\PendingAttestation;
 use OpenTimestamps\Attestations\TimeAttestation;
 use OpenTimestamps\Attestations\UnknownAttestation;
+use OpenTimestamps\Calendar\RemoteCalendar;
 use OpenTimestamps\Exceptions\VerificationError;
 use OpenTimestamps\Ops\OpAppend;
 use OpenTimestamps\Ops\OpSHA256;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
 
 /**
  * Main OpenTimestamps class - facade for timestamp operations.

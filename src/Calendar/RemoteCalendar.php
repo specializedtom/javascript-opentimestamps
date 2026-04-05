@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Calendar;
 
 use OpenTimestamps\Exceptions\ExceededSizeError;
 use OpenTimestamps\Exceptions\URLError;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Timestamp;
+use OpenTimestamps\Utils;
 
 /**
  * Remote calendar client.

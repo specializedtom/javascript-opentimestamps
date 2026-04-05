@@ -10,6 +10,8 @@ use OpenTimestamps\Exceptions\UnsupportedMajorVersion;
 use OpenTimestamps\Exceptions\ValueError;
 use OpenTimestamps\Ops\CryptOp;
 use OpenTimestamps\Ops\Op;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Serialize\StreamSerializationContext;
 
 /**
  * Detached Timestamp File - A file containing a timestamp for another file.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTimestamps\Ops;
 
-use OpenTimestamps\StreamDeserializationContext;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
 
 /**
  * Operations that act on a single message.

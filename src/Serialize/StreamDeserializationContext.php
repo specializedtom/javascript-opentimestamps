@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Serialize;
 
 use OpenTimestamps\Exceptions\BadMagicError;
 use OpenTimestamps\Exceptions\DeserializationError;
 use OpenTimestamps\Exceptions\TrailingGarbageError;
 use OpenTimestamps\Exceptions\TypeError;
+use OpenTimestamps\Utils;
 
 /**
  * Stream deserialization context for reading binary data.
