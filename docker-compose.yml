@@ -1,0 +1,19 @@
+services:
+  php:
+    image: custom-php:8.4-dev
+    container_name: opentimestamps-php
+    working_dir: /var/www/html
+    command: ["php-fpm", "-F"]
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/var/www/html
+    restart: unless-stopped
+
+  cli:
+    image: custom-php:8.4-dev
+    profiles: ["cli"]
+    working_dir: /var/www/html
+    entrypoint: ["php"]
+    volumes:
+      - ./:/var/www/html
