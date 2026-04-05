@@ -337,8 +337,41 @@ class OpenTimestamps
      */
     public static function upgradeTimestamp(Timestamp $timestamp, array $options = []): bool
     {
-        // Implementation would query calendars for pending attestations
-        // For now, return false as this requires network calls
-        return false;
+        $changed = false;
+        $attestations = $timestamp->allAttestations();
+
+        foreach ($attestations as $item) {
+            $msg = $item['msg'] ?? null;
+            $attestation = $item['attestation'] ?? null;
+
+            if (!is_array($msg) || !($attestation instanceof PendingAttestation)) {
+                continue;
+            }
+
+            $candidateCalendars = [];
+            if (isset($options['calendars']) && is_array($options['calendars']) && count($options['calendars']) > 0) {
+                $candidateCalendars = $options['calendars'];
+            } else {
+                $candidateCalendars = [$attestation->uri];
+            }
+
+            foreach ($candidateCalendars as $calendarUrl) {
+                if (!is_string($calendarUrl) || $calendarUrl === '') {
+                    continue;
+                }
+
+                try {
+                    $remote = new RemoteCalendar($calendarUrl);
+                    $upgradedStamp = $remote->getTimestamp($msg);
+                    $timestamp->merge($upgradedStamp);
+                    $changed = true;
+                    break;
+                } catch (\Throwable) {
+                    // Try next calendar candidate for this pending attestation
+                }
+            }
+        }
+
+        return $changed;
     }
 }
