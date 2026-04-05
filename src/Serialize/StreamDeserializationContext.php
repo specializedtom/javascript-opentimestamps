@@ -8,7 +8,7 @@ use OpenTimestamps\Exceptions\BadMagicError;
 use OpenTimestamps\Exceptions\DeserializationError;
 use OpenTimestamps\Exceptions\TrailingGarbageError;
 use OpenTimestamps\Exceptions\TypeError;
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Stream deserialization context for reading binary data.

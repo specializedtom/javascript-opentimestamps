@@ -6,7 +6,7 @@ namespace OpenTimestamps\Attestations;
 
 use OpenTimestamps\Serialize\StreamDeserializationContext;
 use OpenTimestamps\Serialize\StreamSerializationContext;
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Pending attestation - commitment recorded in remote calendar.

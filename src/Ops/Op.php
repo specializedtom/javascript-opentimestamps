@@ -7,7 +7,7 @@ namespace OpenTimestamps\Ops;
 use OpenTimestamps\Exceptions\ValueError;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
 use OpenTimestamps\Serialize\StreamSerializationContext;
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Base class for timestamp proof operations.

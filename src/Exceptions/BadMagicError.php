@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTimestamps\Exceptions;
 
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Raised when file format magic number is incorrect.

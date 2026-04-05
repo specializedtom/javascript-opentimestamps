@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTimestamps\Ops;
 
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Prepend a prefix to a message.

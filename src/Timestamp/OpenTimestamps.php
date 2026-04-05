@@ -18,7 +18,7 @@ use OpenTimestamps\Merkle\Merkle;
 use OpenTimestamps\Ops\OpAppend;
 use OpenTimestamps\Ops\OpSHA256;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Main OpenTimestamps class - facade for timestamp operations.

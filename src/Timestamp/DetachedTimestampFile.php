@@ -12,7 +12,7 @@ use OpenTimestamps\Ops\CryptOp;
 use OpenTimestamps\Ops\Op;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
 use OpenTimestamps\Serialize\StreamSerializationContext;
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Detached Timestamp File - A file containing a timestamp for another file.

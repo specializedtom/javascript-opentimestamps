@@ -8,7 +8,7 @@ use OpenTimestamps\Exceptions\ExceededSizeError;
 use OpenTimestamps\Exceptions\URLError;
 use OpenTimestamps\Serialize\StreamDeserializationContext;
 use OpenTimestamps\Timestamp\Timestamp;
-use OpenTimestamps\Utils;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Remote calendar client.
