@@ -11,7 +11,7 @@ use OpenTimestamps\Attestations\TimeAttestation;
 use OpenTimestamps\Attestations\UnknownAttestation;
 use OpenTimestamps\Calendar\Calendar;
 use OpenTimestamps\Calendar\RemoteCalendar;
-use OpenTimestamps\BitcoinNode;
+use OpenTimestamps\Bitcoin\BitcoinNode;
 use OpenTimestamps\Esplora;
 use OpenTimestamps\Exceptions\VerificationError;
 use OpenTimestamps\Merkle\Merkle;

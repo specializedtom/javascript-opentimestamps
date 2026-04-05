@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Bitcoin;
 
 /**
  * Bitcoin node RPC client.
