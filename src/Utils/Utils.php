@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Utils;
 
 /**
  * Utils class providing utility functions.

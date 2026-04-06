@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Ops;
+
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Serialize\StreamSerializationContext;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Operations that act on a message and a single argument.

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Ops;
+
+use OpenTimestamps\Exceptions\ValueError;
 
 /**
  * Reverse a message.

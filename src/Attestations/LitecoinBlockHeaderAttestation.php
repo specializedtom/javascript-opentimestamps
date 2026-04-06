@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Attestations;
+
+use OpenTimestamps\Exceptions\VerificationError;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Serialize\StreamSerializationContext;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Litecoin Block Header Attestation.

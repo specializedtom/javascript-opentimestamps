@@ -2,7 +2,20 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Timestamp;
+
+use OpenTimestamps\Attestations\BitcoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\PendingAttestation;
+use OpenTimestamps\Attestations\TimeAttestation;
+use OpenTimestamps\Attestations\UnknownAttestation;
+use OpenTimestamps\Exceptions\TypeError;
+use OpenTimestamps\Exceptions\ValueError;
+use OpenTimestamps\Ops\Op;
+use OpenTimestamps\Ops\OpReverse;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Serialize\StreamSerializationContext;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Timestamp class representing a proof that attestations commit to a message.
@@ -40,7 +53,7 @@ class Timestamp
     {
         if (count($msg) === 0 || !is_array($msg)) {
             throw new TypeError('Expected msg to be bytes; got ' . gettype($msg));
-        } elseif (count($msg) > (new Op())->maxMsgLength()) {
+        } elseif (count($msg) > Op::MAX_RESULT_LENGTH) {
             throw new TypeError('Message exceeds Op length limit');
         }
         $this->msg = $msg;
@@ -180,21 +193,21 @@ class Timestamp
     /**
      * Get all attestations recursively.
      *
-     * @return array<int[], TimeAttestation> Map of messages to attestations
+     * @return array<int, array{msg: int[], attestation: TimeAttestation}>
      */
     public function allAttestations(): array
     {
-        $map = [];
+        $list = [];
         foreach ($this->attestations as $attestation) {
-            $map[Utils::bytesToHex($this->msg)] = ['msg' => $this->msg, 'attestation' => $attestation];
+            $list[] = ['msg' => $this->msg, 'attestation' => $attestation];
         }
         foreach ($this->ops as $item) {
-            $subMap = $item['stamp']->allAttestations();
-            foreach ($subMap as $key => $value) {
-                $map[$key] = $value;
+            $subList = $item['stamp']->allAttestations();
+            foreach ($subList as $value) {
+                $list[] = $value;
             }
         }
-        return $map;
+        return $list;
     }
 
     /**
@@ -286,7 +299,7 @@ class Timestamp
         $r = '';
 
         foreach ($this->attestations as $attestation) {
-            $r .= $indention . 'verify ' . $attestation->__toString() . $strResult($verbosity, $this->msg) . "\n";
+            $r .= $indention . 'verify ' . $attestation->__toString() . $strResult($verbosity, $this->msg, null) . "\n";
             if ($attestation instanceof BitcoinBlockHeaderAttestation) {
                 $tx = Utils::bytesToHex((new OpReverse())->call($this->msg));
                 $r .= $indention . '# Bitcoin block merkle root ' . $tx . "\n";

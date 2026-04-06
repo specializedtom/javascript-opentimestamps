@@ -2,7 +2,23 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Timestamp;
+
+use OpenTimestamps\Attestations\BitcoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\LitecoinBlockHeaderAttestation;
+use OpenTimestamps\Attestations\PendingAttestation;
+use OpenTimestamps\Attestations\TimeAttestation;
+use OpenTimestamps\Attestations\UnknownAttestation;
+use OpenTimestamps\Calendar\Calendar;
+use OpenTimestamps\Calendar\RemoteCalendar;
+use OpenTimestamps\Bitcoin\BitcoinNode;
+use OpenTimestamps\Esplora\Esplora;
+use OpenTimestamps\Exceptions\VerificationError;
+use OpenTimestamps\Merkle\Merkle;
+use OpenTimestamps\Ops\OpAppend;
+use OpenTimestamps\Ops\OpSHA256;
+use OpenTimestamps\Serialize\StreamDeserializationContext;
+use OpenTimestamps\Utils\Utils;
 
 /**
  * Main OpenTimestamps class - facade for timestamp operations.
@@ -277,7 +293,7 @@ class OpenTimestamps
 
             // Try local Bitcoin node first, fall back to lite verify
             try {
-                $bitcoinConf = Bitcoin::readBitcoinConf();
+                $bitcoinConf = BitcoinNode::readBitcoinConf();
                 $bitcoin = new BitcoinNode($bitcoinConf);
                 $blockHeader = $bitcoin->getBlockHeader($attestation->height);
 
@@ -287,11 +303,8 @@ class OpenTimestamps
                     'height' => $attestation->height
                 ];
             } catch (\Throwable $err) {
-                if (strpos($err->getMessage(), 'Invalid bitcoin.conf') !== false) {
-                    error_log('Could not connect to local Bitcoin node');
-                    return $liteVerify();
-                }
-                throw new VerificationError('Bitcoin verification failed: ' . $err->getMessage());
+                error_log('Could not verify with local Bitcoin node: ' . $err->getMessage());
+                return $liteVerify();
             }
         } elseif ($attestation instanceof LitecoinBlockHeaderAttestation) {
             throw new \Exception('Litecoin verification not available');
@@ -321,8 +334,79 @@ class OpenTimestamps
      */
     public static function upgradeTimestamp(Timestamp $timestamp, array $options = []): bool
     {
-        // Implementation would query calendars for pending attestations
-        // For now, return false as this requires network calls
-        return false;
+        $changed = false;
+        $sawPending = false;
+        $attestations = $timestamp->allAttestations();
+
+        foreach ($attestations as $item) {
+            $msg = $item['msg'] ?? null;
+            $attestation = $item['attestation'] ?? null;
+
+            if (!is_array($msg) || !($attestation instanceof PendingAttestation)) {
+                continue;
+            }
+            $sawPending = true;
+
+            $candidateCalendars = [];
+            if (isset($options['calendars']) && is_array($options['calendars']) && count($options['calendars']) > 0) {
+                $candidateCalendars = $options['calendars'];
+            } else {
+                $candidateCalendars = array_merge([$attestation->uri], Calendar::DEFAULT_AGGREGATORS);
+            }
+            $legacyCalendarMap = [
+                'https://alice.btc.calendar.opentimestamps.org' => 'https://a.pool.opentimestamps.org',
+                'https://bob.btc.calendar.opentimestamps.org' => 'https://b.pool.opentimestamps.org',
+                'https://finney.calendar.eternitywall.com' => 'https://a.pool.eternitywall.com',
+            ];
+            foreach ($candidateCalendars as $candidateUrl) {
+                if (isset($legacyCalendarMap[$candidateUrl])) {
+                    $candidateCalendars[] = $legacyCalendarMap[$candidateUrl];
+                }
+            }
+            $candidateCalendars = array_values(array_unique($candidateCalendars));
+
+            foreach ($candidateCalendars as $calendarUrl) {
+                if (!is_string($calendarUrl) || $calendarUrl === '') {
+                    continue;
+                }
+
+                try {
+                    $remote = new RemoteCalendar($calendarUrl);
+                    $upgradedStamp = $remote->getTimestamp($msg);
+                    $timestamp->merge($upgradedStamp);
+                    $changed = true;
+                    break;
+                } catch (\Throwable) {
+                    // Try next calendar candidate for this pending attestation
+                }
+            }
+        }
+
+        // Fallback path: if no PendingAttestation is present, try querying candidate calendars
+        // directly with the root timestamp commitment.
+        if (!$changed && !$sawPending) {
+            $candidateCalendars = isset($options['calendars']) && is_array($options['calendars']) && count($options['calendars']) > 0
+                ? $options['calendars']
+                : Calendar::DEFAULT_AGGREGATORS;
+            $candidateCalendars = array_values(array_unique($candidateCalendars));
+
+            foreach ($candidateCalendars as $calendarUrl) {
+                if (!is_string($calendarUrl) || $calendarUrl === '') {
+                    continue;
+                }
+
+                try {
+                    $remote = new RemoteCalendar($calendarUrl);
+                    $upgradedStamp = $remote->getTimestamp($timestamp->msg);
+                    $timestamp->merge($upgradedStamp);
+                    $changed = true;
+                    break;
+                } catch (\Throwable) {
+                    // Try next candidate
+                }
+            }
+        }
+
+        return $changed;
     }
 }

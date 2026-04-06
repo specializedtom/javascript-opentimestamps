@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Merkle;
+
+use OpenTimestamps\Ops\OpAppend;
+use OpenTimestamps\Ops\OpPrepend;
+use OpenTimestamps\Ops\OpSHA256;
+use OpenTimestamps\Timestamp\Timestamp;
 
 /**
  * Merkle tree operations for timestamps.

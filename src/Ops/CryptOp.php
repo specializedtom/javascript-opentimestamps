@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OpenTimestamps;
+namespace OpenTimestamps\Ops;
+
+use OpenTimestamps\Serialize\StreamDeserializationContext;
 
 /**
  * Cryptographic hash operations.
