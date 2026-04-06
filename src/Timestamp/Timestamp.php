@@ -193,21 +193,21 @@ class Timestamp
     /**
      * Get all attestations recursively.
      *
-     * @return array<int[], TimeAttestation> Map of messages to attestations
+     * @return array<int, array{msg: int[], attestation: TimeAttestation}>
      */
     public function allAttestations(): array
     {
-        $map = [];
+        $list = [];
         foreach ($this->attestations as $attestation) {
-            $map[Utils::bytesToHex($this->msg)] = ['msg' => $this->msg, 'attestation' => $attestation];
+            $list[] = ['msg' => $this->msg, 'attestation' => $attestation];
         }
         foreach ($this->ops as $item) {
-            $subMap = $item['stamp']->allAttestations();
-            foreach ($subMap as $key => $value) {
-                $map[$key] = $value;
+            $subList = $item['stamp']->allAttestations();
+            foreach ($subList as $value) {
+                $list[] = $value;
             }
         }
-        return $map;
+        return $list;
     }
 
     /**
