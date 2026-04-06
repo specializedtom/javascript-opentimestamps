@@ -221,9 +221,13 @@ class Cli
             echo "The file .bak was saved!" . PHP_EOL;
         }
 
-        echo $detachedOts->timestamp->isTimestampComplete()
-            ? "Success! Timestamp complete" . PHP_EOL
-            : "Failed! Timestamp not complete" . PHP_EOL;
+        if ($detachedOts->timestamp->isTimestampComplete()) {
+            echo "Success! Timestamp complete" . PHP_EOL;
+        } elseif ($changed) {
+            echo "Timestamp was upgraded, but it is not complete yet" . PHP_EOL;
+        } else {
+            echo "No additional attestations found yet; timestamp not complete" . PHP_EOL;
+        }
 
         return 0;
     }
