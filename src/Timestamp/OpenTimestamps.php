@@ -335,6 +335,7 @@ class OpenTimestamps
     public static function upgradeTimestamp(Timestamp $timestamp, array $options = []): bool
     {
         $changed = false;
+        $sawPending = false;
         $attestations = $timestamp->allAttestations();
 
         foreach ($attestations as $item) {
@@ -344,6 +345,7 @@ class OpenTimestamps
             if (!is_array($msg) || !($attestation instanceof PendingAttestation)) {
                 continue;
             }
+            $sawPending = true;
 
             $candidateCalendars = [];
             if (isset($options['calendars']) && is_array($options['calendars']) && count($options['calendars']) > 0) {
@@ -366,6 +368,31 @@ class OpenTimestamps
                     break;
                 } catch (\Throwable) {
                     // Try next calendar candidate for this pending attestation
+                }
+            }
+        }
+
+        // Fallback path: if no PendingAttestation is present, try querying candidate calendars
+        // directly with the root timestamp commitment.
+        if (!$changed && !$sawPending) {
+            $candidateCalendars = isset($options['calendars']) && is_array($options['calendars']) && count($options['calendars']) > 0
+                ? $options['calendars']
+                : Calendar::DEFAULT_AGGREGATORS;
+            $candidateCalendars = array_values(array_unique($candidateCalendars));
+
+            foreach ($candidateCalendars as $calendarUrl) {
+                if (!is_string($calendarUrl) || $calendarUrl === '') {
+                    continue;
+                }
+
+                try {
+                    $remote = new RemoteCalendar($calendarUrl);
+                    $upgradedStamp = $remote->getTimestamp($timestamp->msg);
+                    $timestamp->merge($upgradedStamp);
+                    $changed = true;
+                    break;
+                } catch (\Throwable) {
+                    // Try next candidate
                 }
             }
         }
