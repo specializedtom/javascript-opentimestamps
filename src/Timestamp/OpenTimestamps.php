@@ -353,6 +353,16 @@ class OpenTimestamps
             } else {
                 $candidateCalendars = array_merge([$attestation->uri], Calendar::DEFAULT_AGGREGATORS);
             }
+            $legacyCalendarMap = [
+                'https://alice.btc.calendar.opentimestamps.org' => 'https://a.pool.opentimestamps.org',
+                'https://bob.btc.calendar.opentimestamps.org' => 'https://b.pool.opentimestamps.org',
+                'https://finney.calendar.eternitywall.com' => 'https://a.pool.eternitywall.com',
+            ];
+            foreach ($candidateCalendars as $candidateUrl) {
+                if (isset($legacyCalendarMap[$candidateUrl])) {
+                    $candidateCalendars[] = $legacyCalendarMap[$candidateUrl];
+                }
+            }
             $candidateCalendars = array_values(array_unique($candidateCalendars));
 
             foreach ($candidateCalendars as $calendarUrl) {
