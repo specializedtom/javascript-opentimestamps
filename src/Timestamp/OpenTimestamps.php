@@ -293,7 +293,7 @@ class OpenTimestamps
 
             // Try local Bitcoin node first, fall back to lite verify
             try {
-                $bitcoinConf = Bitcoin::readBitcoinConf();
+                $bitcoinConf = BitcoinNode::readBitcoinConf();
                 $bitcoin = new BitcoinNode($bitcoinConf);
                 $blockHeader = $bitcoin->getBlockHeader($attestation->height);
 
@@ -303,11 +303,8 @@ class OpenTimestamps
                     'height' => $attestation->height
                 ];
             } catch (\Throwable $err) {
-                if (strpos($err->getMessage(), 'Invalid bitcoin.conf') !== false) {
-                    error_log('Could not connect to local Bitcoin node');
-                    return $liteVerify();
-                }
-                throw new VerificationError('Bitcoin verification failed: ' . $err->getMessage());
+                error_log('Could not verify with local Bitcoin node: ' . $err->getMessage());
+                return $liteVerify();
             }
         } elseif ($attestation instanceof LitecoinBlockHeaderAttestation) {
             throw new \Exception('Litecoin verification not available');
